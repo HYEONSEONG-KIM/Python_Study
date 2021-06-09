@@ -6,9 +6,9 @@ result = ""
 
 ran = random.random()
 
-if ran > 0.33 :
+if ran > 0.66 :
     com = "가위"
-elif ran > 0.66 :
+elif ran > 0.33 :
     com = "바위"
 else :
     com = "보"
