@@ -3,3 +3,4 @@
 - [Day02(for, function, class)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day02)
 - [Day03(다중상속, 생성자, 소멸자)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day03)
 - [Day04(pyqt)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day04)
+- [Day05(pyqt-오목1)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day05)
