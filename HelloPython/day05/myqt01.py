@@ -11,18 +11,19 @@ class MyWindow(QMainWindow, form_class):
         super().__init__()
         self.setupUi(self)
         
-        for i in range(0,20) :
-            btn1 = QPushButton('', self)
-            btn1.setIcon(QtGui.QIcon("0.png"))
-            btn1.setIconSize(QtCore.QSize(40,40))
-            btn1.setGeometry(i*40,0,40,40)
+        self.state = 0
+        self.btn = QPushButton('', self)
+        self.btn.setIcon(QtGui.QIcon("0.png"))
+        self.btn.setIconSize(QtCore.QSize(40,40))
+        self.btn.setGeometry(0,0,40,40)
        
-            btn1.clicked.connect(self.myclick)
+        self.btn.clicked.connect(self.myclick)
         
         
     def myclick(self):
-        exist_btn = self.sender()
-        exist_btn.setIcon(QtGui.QIcon("1.png"))
+        self.state += 1
+        int_mode = self.state % 3
+        self.btn.setIcon(QtGui.QIcon('{}.png'.format(int_mode)))
         
  
  
