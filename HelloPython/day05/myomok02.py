@@ -73,24 +73,90 @@ class MyWindow(QMainWindow, form_class):
         ri = self.getRI(int_i,int_j,stone)
         le = self.getLE(int_i,int_j,stone)
         
-        # ur = self.getUR(int_i,int_j,stone)
-        # ul = self.getUL(int_i,int_j,stone)
-        # dr = self.getDR(int_i,int_j,stone)
-        # dl = self.getDL(int_i,int_j,stone)
-        
+        ur = self.getUR(int_i,int_j,stone)
+        ul = self.getUL(int_i,int_j,stone)
+        dr = self.getDR(int_i,int_j,stone)
+        dl = self.getDL(int_i,int_j,stone)
         
         
         
         self.myrender()
         self.flagWB = not self.flagWB
+    
+    def getDL(self,i,j,stone):
+        cnt = 0
+        try :
+            while True :
+                i -= 1
+                j -= 1
+                
+                if i < 0 or j <0 :
+                    return cnt
+                
+                if self.arr2D[i][j] == stone :
+                    cnt += 1
+                else : 
+                    return cnt
+        except :
+            return cnt     
+    
+    
+    
+    def getDR(self,i,j,stone):
+        cnt = 0
+        try :
+            while True :
+                i += 1
+                j += 1
+                
+                if self.arr2D[i][j] == stone :
+                    cnt += 1
+                else : 
+                    return cnt
+        except :
+            return cnt     
+    
+    
+    def getUL(self,i,j,stone):
+        cnt = 0
+        try :
+            while True :
+                i -= 1
+                j += 1
+                if i < 0 :
+                    return cnt
+                
+                if self.arr2D[i][j] == stone :
+                    cnt += 1
+                else : 
+                    return cnt
+        except :
+            return cnt 
         
+        
+    
+    def getUR(self,i,j,stone):
+        cnt = 0
+        try :
+            while True :
+                i += 1
+                j -= 1
+                if j < 0 :
+                    return cnt
+                
+                if self.arr2D[i][j] == stone :
+                    cnt += 1
+                else : 
+                    return cnt
+        except :
+            return cnt 
     
     def getUP(self,i,j,stone):
         cnt = 0
         try :
             while True :
                 i -= 1
-                if(i < 0) :
+                if i < 0 :
                     return cnt
                 
                 if self.arr2D[i][j] == stone :
