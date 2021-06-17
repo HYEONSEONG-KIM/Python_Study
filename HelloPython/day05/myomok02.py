@@ -1,8 +1,9 @@
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5 import uic,QtGui, QtCore
+from PyQt5 import uic,QtGui, QtCore, QtWidgets
 from PyQt5.Qt import QPixmap
 from _csv import Error
+from sqlalchemy.sql.expression import false
  
 # 파일 불러오기
 form_class = uic.loadUiType('myomok02.ui')[0]
@@ -13,19 +14,36 @@ class MyWindow(QMainWindow, form_class):
         self.setupUi(self)
         
         self.arr2D = [
-            [0,0,0,0, 0,0,0,0],
-            [0,0,0,0, 0,0,0,0],
-            [0,0,0,0, 0,0,0,0],
-            [0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0],
+            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0]
             
-            [0,0,0,0, 0,0,0,0],
-            [0,0,0,0, 0,0,0,0],
-            [0,0,0,0, 0,0,0,0],
-            [0,0,0,0, 0,0,0,0]
         ]
         # 전역변수를 담는 그릇...버튼 하나하나에 객체를 나누어 주기 위해서
         self.pb2D = []
         self.flagWB = True
+        self.flagOver = False
+        self.pbReset.clicked.connect(self.myReset)
+        
  
         for i in range(len(self.arr2D[0])) :
             line = []
@@ -34,23 +52,37 @@ class MyWindow(QMainWindow, form_class):
                 btn.setIcon(QtGui.QIcon("0.png"))
                 btn.setIconSize(QtCore.QSize(40,40))
                 btn.setGeometry(40*j,40*i,40,40)
-                str_tooltip = str(i) + "," + str(j) 
-                btn.setToolTip(str_tooltip)
+                strTooltip = str(i) + "," + str(j) 
+                btn.setToolTip(strTooltip)
                 btn.clicked.connect(self.myclick)
                 line.append(btn)
             self.pb2D.append(line)
-        self.myrender()
+        self.myRender()
         
         
-    def myrender(self):
+    def myRender(self):
         for i in range(len(self.pb2D[0])) :
             for j in range(len(self.pb2D)) :
                 int_pb = self.arr2D[i][j]
                 self.pb2D[i][j].setIcon(QtGui.QIcon("{}.png".format(int_pb)))
                 
-                
-   
+    def myReset(self):
+        self.flagOver = False
+        self.flagWB = True
+        
+        for i in range(len(self.arr2D[0])) :
+            for j in range(len(self.arr2D)) : 
+                self.arr2D[i][j] = 0
+        
+        self.myRender()
+        
+        
+                    
     def myclick(self):
+        
+        if self.flagOver :
+            return
+        
         getTool = self.sender().toolTip()
         get_ij = getTool.split(",")
         int_i = int(get_ij[0])
@@ -78,16 +110,45 @@ class MyWindow(QMainWindow, form_class):
         dr = self.getDR(int_i,int_j,stone)
         dl = self.getDL(int_i,int_j,stone)
         
+        d1 = up + dw + 1
+        d2 = ur + dl + 1
+        d3 = le + ri + 1
+        d4 = ul + dr + 1
         
+       
         
-        self.myrender()
+        # print("up",up)
+        # print("dw",dw)
+        # print("ri",ri)
+        # print("le",le)
+        # print("ur",ur)
+        # print("ul",ul)
+        # print("dr",dr)
+        # print("dl",dl)
+        # print("d1",d1)
+        # print("d2",d2)
+        # print("d3",d3)
+        # print("d4",d4)
+        
+
+        
+        self.myRender()
+        
+        if d1 ==5 or d2 == 5 or d3 == 5 or d4 == 5 :
+            if self.flagWB :
+                QtWidgets.QMessageBox.information(self, "gameover", "백돌승리")
+            else :
+                QtWidgets.QMessageBox.information(self, "gameover", "흑돌승리")
+                
+            self.flagOver = True
+            
         self.flagWB = not self.flagWB
     
     def getDL(self,i,j,stone):
         cnt = 0
         try :
             while True :
-                i -= 1
+                i += 1
                 j -= 1
                 
                 if i < 0 or j <0 :
@@ -122,7 +183,10 @@ class MyWindow(QMainWindow, form_class):
         try :
             while True :
                 i -= 1
-                j += 1
+                j -= 1
+                if j < 0 :
+                    return cnt
+                
                 if i < 0 :
                     return cnt
                 
@@ -139,10 +203,11 @@ class MyWindow(QMainWindow, form_class):
         cnt = 0
         try :
             while True :
-                i += 1
-                j -= 1
-                if j < 0 :
+                i -= 1
+                j += 1
+                if i < 0 :
                     return cnt
+                
                 
                 if self.arr2D[i][j] == stone :
                     cnt += 1
@@ -188,6 +253,8 @@ class MyWindow(QMainWindow, form_class):
         try :
             while True :
                 j += 1
+                if j < 0 :
+                    return cnt
                 
                 if self.arr2D[i][j] == stone :
                     cnt += 1
