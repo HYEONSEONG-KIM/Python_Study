@@ -5,3 +5,5 @@
 - [Day04(pyqt)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day04)
 - [Day05(pyqt-오목1)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day05)
 - [Day06(pyqt-오목2)](https://github.com/HYEONSEONG-KIM/Python_Study/blob/main/HelloPython/day05/myomok02.py)
+- [Day07(mariaDB연동)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day07)
+- [Day08(크롤링, BeautifulSoup)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day08)
