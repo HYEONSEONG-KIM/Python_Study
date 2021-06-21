@@ -3,7 +3,12 @@ import os
 import sys
 import urllib.request
 import pymysql
+import pymysql
 
+
+db = pymysql.connect(host = 'localhost', user = 'root', password='python', database='pydb', port=3307)
+cursor = db.cursor()
+query = "INSERT INTO JMT(title,link,description,bloggername,bloggerlink,postdate) VALUES(%s,%s,%s,%s,%s,%s)"
 
 client_id = "fybiUHvuaJPxmxTHsvBp"
 client_secret = "K2F0icIJsA"
@@ -17,25 +22,25 @@ response = urllib.request.urlopen(request)
 rescode = response.getcode()
 if(rescode==200):
     response_body = response.read()
-    soup = BeautifulSoup(response_body, "html.parser")
+    xml = response_body.decode('utf-8')
+    soup = BeautifulSoup(xml, "xml")
+    items = soup.select('item')
+    
+    for item in items:
+        title = item.title.text
+        link = item.link.text
+        description = item.description.text
+        bloggername = item.bloggername.text
+        bloggerlink = item.bloggerlink.text
+        postdate = item.postdate.text
+        cnt = cursor.execute(query,(title,link,description,bloggername,bloggerlink,postdate))
+       
     
     
-    db = pymysql.connect(host = 'localhost', user = 'root', password='python', database='pydb', port=3307)
-    cursor = db.cursor()
-    
-    title = soup.select('item > title')
-    link = soup.select('item > link')
-    description = soup.select('item > description')
-    bloggername = soup.select('item > bloggername')
-    bloggerlink = soup.select('item > bloggerlink')
-    postdate = soup.select('item > postdate')
-    
- 
-    query = "INSERT INTO JMT VALUES(%s,%s,%s,%s,%s,%s)"
-    for i in range(0,len(title)) :
-        cnt = cursor.execute(query,(title[i].string,link[i].string,description[i].string, bloggername[i].string,bloggerlink[i].string,postdate[i].string))
-        db.commit()
+    db.commit()
     db.close()
+    cursor.close()
+    
 else:
     print("Error Code:" + rescode)
     
