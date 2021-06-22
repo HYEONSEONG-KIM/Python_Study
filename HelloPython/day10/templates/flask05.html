@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+Hello Flask05
+<h4> {{mystr}}를(을) 전달받았습니다. </h4>
+{%for i in arr%}
+<h4>{{i}}</h4>
+{%endfor%}
+
+<table border ="1">
+	<tr>
+		<th>종목</th>
+		<th>코드</th>
+		<th>가격</th>
+	</tr>
+	{%for i in list%}
+	<tr>
+		<td>{{i.s_name}}</td>
+		<td>{{i.s_code}}</td>
+		<td>{{i.price}}</td>
+	</tr>
+	{%endfor%}
+</table>
+
+<img src = "다음.png">
+
+</body>
+</html>

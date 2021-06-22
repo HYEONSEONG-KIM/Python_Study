@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src = "../js/jquery-3.6.0.min.js"></script>
+ <script type="text/javascript">
+ $(function(){
+
+	 var id = "1";
+     var password ="1";
+     var email = $('#email1').val();
+
+     var postdata = {
+         'id':id, 'password':password, 'email':email
+     }
+     $.ajax({
+         type: 'POST',
+         url: 'ajax',
+         data: JSON.stringify(postdata),
+         dataType : 'JSON',
+         contentType: "application/json",
+         success: function(data){
+           console.log(data)
+         },
+         error: function(request, status, error){
+             alert('ajax 통신 실패')
+             alert(error);
+         }
+     })
+	 
+ }) 
+ 	
+ </script>
+</head>
+<body>
+<img src = "../img/captcha.jpg">
+ajax
+<div id = "result">
+</div>
+</body>
+</html>
