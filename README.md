@@ -7,3 +7,6 @@
 - [Day06(pyqt-오목2)](https://github.com/HYEONSEONG-KIM/Python_Study/blob/main/HelloPython/day05/myomok02.py)
 - [Day07(mariaDB연동)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day07)
 - [Day08(크롤링, BeautifulSoup)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day08)
+- [Day09(3D Graph)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day09)
+- [Day10(Flask)](https://github.com/HYEONSEONG-KIM/Python_Study/tree/main/HelloPython/day10)
+
