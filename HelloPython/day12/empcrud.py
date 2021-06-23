@@ -3,25 +3,28 @@ from flask.templating import render_template
 from flask.globals import request
 from flask.json import jsonify
 import pymysql
-from day11.mydao_sample import DaoSample
+from day12.mydao_emp import DaoEmp
+
 app = Flask(__name__, static_url_path='',
             static_folder='./static/')
 @app.route('/')
 def home():
-    ds = DaoSample()
+    ds = DaoEmp()
     list = ds.selectList()
     
-    return render_template('mycrud01.html', list = list)
+    return render_template('empcrud.html', list = list)
 
 @app.route('/insert.ajax', methods=['POST'])
 def insert_ajax():
     sample = request.get_json()
-    col01 = sample['col01']
-    col02 = sample['col02']
-    col03 = sample['col03']
-    ds = DaoSample()
+    id = sample['id']
+    ko_name = sample['ko_name']
+    en_name = sample['en_name']
+    mobile = sample['mobile']
+    address = sample['address']
+    ds = DaoEmp()
     
-    cnt = ds.insert(col01, col02, col03)
+    cnt = ds.insert(id, ko_name, en_name,mobile,address)
     result = "fail"
     if cnt == 1 :
         result = "success"
@@ -31,12 +34,14 @@ def insert_ajax():
 @app.route('/update.ajax', methods=['POST'])
 def update_ajax():
     sample = request.get_json()
-    col01 = sample['col01']
-    col02 = sample['col02']
-    col03 = sample['col03']
-    ds = DaoSample()
+    id = sample['id']
+    ko_name = sample['ko_name']
+    en_name = sample['en_name']
+    mobile = sample['mobile']
+    address = sample['address']
+    ds = DaoEmp()
     
-    cnt = ds.update(col01, col02, col03)
+    cnt = ds.update(id, ko_name, en_name,mobile,address)
     result = "fail"
     if cnt == 1 :
         result = "success"
@@ -46,11 +51,11 @@ def update_ajax():
 @app.route('/delete.ajax', methods=['POST'])
 def delete_ajax():
     sample = request.get_json()
-    col01 = sample['col01']
+    id = sample['id']
    
-    ds = DaoSample()
+    ds = DaoEmp()
     
-    cnt = ds.delete(col01)
+    cnt = ds.delete(id)
     result = "fail"
     if cnt == 1 :
         result = "success"

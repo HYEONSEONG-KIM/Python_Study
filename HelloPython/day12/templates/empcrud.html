@@ -11,19 +11,23 @@
 <script type="text/javascript" src = "../js/jquery-3.6.0.min.js"></script>
  <script type="text/javascript">
 	
- 	function fn_setCols(col01,col02,col03){
-		$('#col01').val(col01)		
-		$('#col02').val(col02)		
-		$('#col03').val(col03)		
+ 	function fn_setCols(e_id,ko_name,en_name,mobile,address){
+ 	 	$('#e_id').val(e_id)
+		 $('#ko_name').val(ko_name)
+		 $('#en_name').val(en_name)
+		 $('#mobile').val(mobile)
+		 $('#address').val(address)		
 	}
  	
  	function fn_insert(){
- 		 var col01 = $('#col01').val()
- 		 var col02 = $('#col02').val()
- 		 var col03 = $('#col03').val()
+ 		 var e_id = $('#e_id').val()
+ 		 var ko_name = $('#ko_name').val()
+ 		 var en_name = $('#en_name').val()
+ 		 var mobile = $('#mobile').val()
+ 		 var address = $('#address').val()
  	     
  	     var postdata = {
- 	         'col01':col01, 'col02':col02, 'col03':col03
+ 	         'id':e_id, 'ko_name':ko_name, 'en_name':en_name, 'mobile':mobile, 'address':address
  	     }
  	     $.ajax({
  	         type: 'POST',
@@ -47,12 +51,14 @@
  	}
  	
  	function fn_update(){
- 		var col01 = $('#col01').val()
-		var col02 = $('#col02').val()
-		var col03 = $('#col03').val()
- 		
-		var postdata = {
- 	         'col01':col01, 'col02':col02, 'col03':col03
+ 		 var e_id = $('#e_id').val()
+ 		 var ko_name = $('#ko_name').val()
+ 		 var en_name = $('#en_name').val()
+ 		 var mobile = $('#mobile').val()
+ 		 var address = $('#address').val()
+ 	     
+ 	     var postdata = {
+ 	         'id':e_id, 'ko_name':ko_name, 'en_name':en_name, 'mobile':mobile, 'address':address
  	     }
 		
 		 $.ajax({
@@ -83,9 +89,9 @@
 			return;
 		}
 		
-		var col01 = $('#col01').val()
+		var id = $('#e_id').val()
 		var postdata = {
- 	         'col01':col01
+ 	         'id':id
  	     }
 		
 		 $.ajax({
@@ -112,42 +118,62 @@
  </script>
 </head>
 <body>
-<div style = "width: 10%; float: left;">
+<div style = "width: 20%; float: left;">
 	<table border =1 id = "whole">
 		<tr>
-			<th>col01</th>
-			<th>col02</th>
-			<th>col03</th>
+			<th>아이디</th>
+			<th>한국이름</th>
+			<th>영어이름</th>
+			<th>전화번호</th>
+			<th>주소</th>
 		</tr>
 		{%for i in list%}
 			<tr>
-				<td><a href = "javascript:fn_setCols('{{i.col01}}','{{i.col02}}','{{i.col03}}')">{{i.col01}}</a></td>
-				<td>{{i.col02}}</td>
-				<td>{{i.col03}}</td>
+				<td><a href = "javascript:fn_setCols('{{i.id}}','{{i.ko_name}}','{{i.en_name}}','{{i.mobile}}','{{i.address}}')">{{i.id}}</a></td>
+				<td>{{i.ko_name}}</td>
+				<td>{{i.en_name}}</td>
+				<td>{{i.mobile}}</td>
+				<td>{{i.address}}</td>
 			</tr>
 		{%endfor%}
 	</table> 
 </div>
-<div style = "width: 88%; float: right;">
+<div style = "width: 75%; float: right;">
 	<table border = "1" id = "detail">
 		<tr>
-			<th>col01</th>
+			<th>아이디</th>
 			<td>
-				<input type = "text" id = "col01">
+				<input type = "text" id = "e_id">
 			</td>
 		</tr>
 		
 		<tr>
-			<th>col02</th>
+			<th>한국이름</th>
 			<td>
-				<input type = "text" id = "col02">
+				<input type = "text" id = "ko_name">
 			</td>
 		</tr>
 		
 		<tr>
-			<th>col03</th>
+			<th>영어이름</th>
 			<td>
-				<input type = "text" id = "col03">
+				<input type = "text" id = "en_name">
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<th>전화번호</th>
+			<td>
+				<input type = "text" id = "mobile">
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<th>주소</th>
+			<td>
+				<input type = "text" id = "address">
 			</td>
 		</tr>
 		

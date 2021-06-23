@@ -2,7 +2,7 @@ import os
 import sys
 import urllib.request
 
-def getKey(id,secret):
+def getKeys(id,secret):
     key = ""
     client_id = id # 개발자센터에서 발급받은 Client ID 값
     client_secret = secret # 개발자센터에서 발급받은 Client Secret 값

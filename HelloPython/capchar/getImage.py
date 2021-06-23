@@ -1,8 +1,9 @@
 import os
 import sys
 import urllib.request
+from datetime import datetime
 
-def getImage(id,secret, setKey):
+def getImages(id,secret, setKey):
     client_id = id # 개발자센터에서 발급받은 Client ID 값
     client_secret = secret # 개발자센터에서 발급받은 Client Secret 값
     key = setKey # 캡차 Key 값
@@ -15,8 +16,13 @@ def getImage(id,secret, setKey):
     if(rescode==200):
         print("캡차 이미지 저장")
         response_body = response.read()
-        with open('static/img/captcha.jpg', 'wb') as f:
+        dt = datetime.now()
+       
+        imageName =  str(dt.microsecond) + ".jpg"
+        with open('static/img/' + imageName, 'wb') as f:
             f.write(response_body)
+            
+        return imageName
     else:
         print("Error Code:" + rescode)
     

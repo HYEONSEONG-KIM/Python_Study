@@ -13,7 +13,7 @@ cnt = cursor.execute(query,(7,7,7))
 data = cursor.fetchall()
 
 
-result = db.commit()
+db.commit()
 
 print(data)
 print(cnt)
