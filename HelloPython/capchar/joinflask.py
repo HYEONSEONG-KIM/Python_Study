@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask.templating import render_template
 from flask.globals import request
