@@ -4,6 +4,8 @@ from PyQt5 import uic,QtGui, QtCore, QtWidgets
 from PyQt5.Qt import QPixmap
 from _csv import Error
 from sqlalchemy.sql.expression import false
+import numpy as np
+from dask.array.tests.test_numpy_compat import dtype
  
 # 파일 불러오기
 form_class = uic.loadUiType('myomok02.ui')[0]
@@ -13,41 +15,23 @@ class MyWindow(QMainWindow, form_class):
         super().__init__()
         self.setupUi(self)
         
-        self.arr2D = [
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            
-            
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
-            [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0]
-            
-         
-            
-        ]
+        
+        self.arr2D =  np.zeros((20,20),dtype = np.int64)
+        
         # 전역변수를 담는 그릇...버튼 하나하나에 객체를 나누어 주기 위해서
         self.pb2D = []
         self.flagWB = True
         self.flagOver = False
         self.pbReset.clicked.connect(self.myReset)
-        self.cnt = 0;
+        
+        self.arr_room = [
+                {'i' : 0, 'j' : 0},
+                {'i' : 0, 'j' : 1},
+                {'i' : 0, 'j' : 2},
+                {'i' : 0, 'j' : 3},
+                {'i' : 0, 'j' : 4}
+            ]
+        self.idx_room = 0
         
         for i in range(len(self.arr2D[0])) :
             line = []
@@ -78,6 +62,7 @@ class MyWindow(QMainWindow, form_class):
             for j in range(len(self.arr2D)) : 
                 self.arr2D[i][j] = 0
         
+        self.idx_room = 0
         self.myRender()
         
         
@@ -121,20 +106,49 @@ class MyWindow(QMainWindow, form_class):
         
        
         
-        # print("up",up)
-        # print("dw",dw)
-        # print("ri",ri)
-        # print("le",le)
-        # print("ur",ur)
-        # print("ul",ul)
-        # print("dr",dr)
-        # print("dl",dl)
-        # print("d1",d1)
-        # print("d2",d2)
-        # print("d3",d3)
-        # print("d4",d4)
+        self.myRender()
         
-
+        if d1 ==5 or d2 == 5 or d3 == 5 or d4 == 5 :
+            if self.flagWB :
+                QtWidgets.QMessageBox.information(self, "gameover", "백돌승리")
+            else :
+                QtWidgets.QMessageBox.information(self, "gameover", "흑돌승리")
+                
+            self.flagOver = True
+            return
+            
+       
+        self.flagWB = not self.flagWB
+        
+        #-------------------------------------------------
+        print(self.arr_room[self.idx_room])
+        com_i = self.arr_room[self.idx_room]['i']
+        com_j = self.arr_room[self.idx_room]['j']
+        stone = 0
+        
+        if self.flagWB :
+            self.arr2D[com_i][com_j] = 1
+            stone = 1
+        else :
+            self.arr2D[com_i][com_j] = 2
+            stone = 2
+            
+        up = self.getUP(com_i,com_j,stone)    
+        dw = self.getDW(com_i,com_j,stone)
+        ri = self.getRI(com_i,com_j,stone)
+        le = self.getLE(com_i,com_j,stone)
+        
+        ur = self.getUR(com_i,com_j,stone)
+        ul = self.getUL(com_i,com_j,stone)
+        dr = self.getDR(com_i,com_j,stone)
+        dl = self.getDL(com_i,com_j,stone)
+        
+        d1 = up + dw + 1
+        d2 = ur + dl + 1
+        d3 = le + ri + 1
+        d4 = ul + dr + 1
+        
+       
         
         self.myRender()
         
@@ -147,10 +161,11 @@ class MyWindow(QMainWindow, form_class):
             self.flagOver = True
             return
             
-        self.arr2D[0][self.cnt] = 2
-        self.cnt += 1
-        self.myRender()
-        # self.flagWB = not self.flagWB
+        self.idx_room += 1
+        self.flagWB = not self.flagWB
+        
+        
+        
     
     def getDL(self,i,j,stone):
         cnt = 0

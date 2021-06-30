@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src = "../js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	var arr2D = [
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		[0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0],
+		
+	];
+	var flagWB = true;
+	var flagOver = false;
+
+	function myInit(){
+		myRander(arr2D)
+	}
+	
+	function myRander(arr2D){
+		for(var i = 0; i < 20; i ++){
+			for(var j = 0; j < 20; j ++){
+				if(arr2D[i][j]==0){
+					$('img').eq(i*20 + j).attr('src','../img/0.png')
+				}
+				if(arr2D[i][j]==1){
+					$('img').eq(i*20 + j).attr('src','../img/1.png')
+				}
+				if(arr2D[i][j]==2){
+					$('img').eq(i*20 + j).attr('src','../img/2.png')
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	$(document).ready(function(){
+		
+		
+		
+		
+		for(var i = 0; i < 20; i ++){
+			for(var j = 0; j < 20; j ++){
+				index = i + "," + j
+				$('img').eq(i*20 + j).attr('title',index)
+				
+				
+			
+			}
+		}
+		
+		$('img').on('click',function(e){
+			myclick(e);
+			
+		})
+		myRander(arr2D);
+		
+	})
+	
+	function myclick(e){
+		
+		if(flagOver){
+			return
+		}
+		
+		var str_ij = e.target.title.split(',');
+		int_i = parseInt(str_ij[0]);
+		int_j = parseInt(str_ij[1]);
+		
+		if(arr2D[int_i][int_j] > 0)
+            return
+		
+		var stone = 0;
+		if(flagWB){
+		arr2D[int_i][int_j] = 1;
+		stone = 1;
+		}else{
+		arr2D[int_i][int_j] = 2;
+		stone =2;
+		}
+		
+		var up = getUP(int_i,int_j,stone)
+	    var dw = getDW(int_i,int_j,stone)
+       	var ri = getRI(int_i,int_j,stone)
+        var le = getLE(int_i,int_j,stone)
+        
+        var ur = getUR(int_i,int_j,stone)
+        var ul = getUL(int_i,int_j,stone)
+        var dr = getDR(int_i,int_j,stone)
+        var dl = getDL(int_i,int_j,stone) 
+		
+        var d1 = up + dw + 1
+        var d2 = ur + dl + 1
+        var d3 = le + ri + 1
+        var d4 = ul + dr + 1
+		
+		console.log(d1);
+		console.log(d2);
+		console.log(d3);
+		console.log(d4);
+		
+		myRander(arr2D);
+		
+		
+		if (d1 ==5 || d2 == 5 || d3 == 5 || d4 == 5){
+			 if(flagWB){
+				 alert("백돌승리")
+			 }else{
+				 alert("흑돌승리")
+			 }
+			 flagOver = true;
+		}
+           
+		
+		flagWB = !flagWB;
+		
+		
+		
+		
+		
+	}
+	
+	function getUP(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            i -= 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+	function getDW(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            i += 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+	function getRI(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            j += 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+	function getLE(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            j -= 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+	function getUR(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            i -= 1;
+				j += 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+	function getUL(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            i -= 1;
+				j -= 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+	function getDR(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            i += 1;
+				j += 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+	function getDL(i,j,stone){
+		var cnt = 0;
+		try{
+			while(true){
+	            i += 1;
+				j -= 1;
+	            if(arr2D[i][j] == stone){
+	                cnt += 1;
+	            }else{
+	                return cnt	;
+	            } 
+			}
+		}catch(error){
+			return cnt;
+		}
+		
+	}
+	
+</script>
+<style type="text/css">
+	table, td{
+		
+		border-collapse: collapse;
+		border-spacing: 0px;
+		border-style: none;
+		padding: 0
+	}
+	img{
+		display: block;
+		width : 25px;
+		height: 25px;
+	}
+	
+	
+	
+	
+</style>
+</head>
+<body>
+
+<table>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png" ></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	<tr>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+		<td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td><td><img src = "../img/0.png"></td>
+	</tr>
+	
+</table>
+
+</body>
+</html>
